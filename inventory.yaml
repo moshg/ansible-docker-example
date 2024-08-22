@@ -1,0 +1,4 @@
+appservers:
+  hosts:
+    server1:
+    server2:

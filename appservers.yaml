@@ -1,0 +1,19 @@
+- hosts: all
+  become: yes
+  gather_facts: no
+  handlers:
+    - name: restart mysqld
+      service: name=mysqld state=restarted
+  tasks:
+    - name: Check if alp is installed
+      stat:
+        path: /usr/local/bin/alp
+      register: alp_stat
+    - name: install alp
+      shell: |
+        wget https://github.com/tkuchiki/alp/releases/download/v1.0.21/alp_linux_amd64.tar.gz
+        tar -xvf alp_linux_amd64.tar.gz
+        install alp /usr/local/bin/alp
+        rm alp_linux_amd64.tar.gz
+        rm alp
+      when: not alp_stat.stat.exists
